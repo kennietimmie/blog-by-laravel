@@ -32,7 +32,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Gate::define('admin', fn(User $user) => $user->role === 'administrator');
+        Gate::define('admin', fn(User $user) =>  in_array($user->role, ['editor', 'administrator']));
 
         Blade::if('admin', fn() => request()->user() && request()->user()->can('admin'));
     }
