@@ -10,22 +10,27 @@ Route::prefix('posts')->group(function () {
   Route::post('/{post:slug}/comment', [CommentController::class, 'store'])->name('posts.comment.store');
 });
 
-Route::prefix('admin/posts')->middleware('admin')->group(function () {
-  Route::get('/', [AdminPostController::class, 'index'])->name('admin.posts.index');
+Route::name('admin.posts.')->prefix('admin/posts')
+  ->middleware(['throttle:posts', 'admin'])
+  ->group(function () {
 
-  Route::get('/create', [AdminPostController::class, 'create'])->name('admin.posts.create');
-  Route::post('/', [AdminPostController::class, 'store'])->name('admin.posts.store');
+    Route::controller(AdminPostController::class)->group(function () {
+      Route::get('/', 'index')->name('index');
 
-  Route::get('/{post}', [AdminPostController::class, 'edit'])->name('admin.posts.edit');
-  Route::patch('/{post}', [AdminPostController::class, 'update'])->name('admin.posts.update');
-  Route::delete('/{post}', [AdminPostController::class, 'destroy'])->name('admin.posts.delete');
+      Route::get('/create', 'create')->name('create');
+      Route::post('/', 'store')->name('store');
 
-  // Route::resource('/', AdminPostController::class)->except('show')->names([
-  //   'index' => 'admin.posts.index',
-  //   'create' => 'admin.posts.create',
-  //   'store' => 'admin.posts.store',
-  //   'edit' => 'admin.posts.edit',
-  //   'update' => 'admin.posts.update',
-  //   'destroy' => 'admin.posts.delete',
-  // ]);
-});
+      Route::get('/{post}', 'edit')->name('edit');
+      Route::match(['put', 'patch'], '/{post}', 'update')->name('update');
+      Route::delete('/{post}', 'destroy')->name('delete');
+    });
+
+    // Route::resource('/', AdminPostController::class)->except('show')->names([
+    //   'index' => 'admin.posts.index',
+    //   'create' => 'admin.posts.create',
+    //   'store' => 'admin.posts.store',
+    //   'edit' => 'admin.posts.edit',
+    //   'update' => 'admin.posts.update',
+    //   'destroy' => 'admin.posts.delete',
+    // ]);
+  });

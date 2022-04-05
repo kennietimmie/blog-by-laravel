@@ -29,7 +29,10 @@ Route::get('/author/{author:username}', fn (User $author) =>  view('posts.index'
 
 Route::get('/dashboard', fn () => view('dashboard'))->middleware(['auth'])->name('dashboard');
 
-Route::prefix('')->group(__DIR__ . '\post.php');
+/**
+ * Admin post routes are in the post.php
+ */
+
 Route::prefix('categories')->group(__DIR__ . '\category.php');
 Route::prefix('')->group(__DIR__ . '\mailchimp.php');
 
