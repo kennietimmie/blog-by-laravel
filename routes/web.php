@@ -1,8 +1,13 @@
 <?php
 
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\PostController;
+use App\Models\Category;
+use App\Models\Post;
+use App\Models\User;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Routing\RouteRegistrar;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,12 +19,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Dashboard
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+Route::get('/', [PostController::class, 'index'])->name('welcome');
 
-require __DIR__.'/auth.php';
+Route::get('/author/{author:username}', fn (User $author) =>  view('posts.index', [
+    'posts' => $author->posts()->latest()->paginate(12)->withQueryString(),
+]))->name('posts.author');
+
+Route::get('/dashboard', fn () => view('dashboard'))->middleware(['auth'])->name('dashboard');
+
+Route::prefix('')->group(__DIR__ . '\post.php');
+Route::prefix('categories')->group(__DIR__ . '\category.php');
+Route::prefix('')->group(__DIR__ . '\mailchimp.php');
+
+require __DIR__ . '/auth.php';
