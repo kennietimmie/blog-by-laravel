@@ -19,7 +19,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        app()->bind(Newsletter::class, function(){
+        app()->bind(Newsletter::class, function () {
             $client = (new ApiClient())->setConfig(collect(config('services.mailchimp'))->only('apiKey', 'server'));
             return new MailchimpNewsletter($client);
         });
@@ -32,8 +32,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Gate::define('admin', fn(User $user) =>  in_array($user->role, ['editor', 'administrator']));
+        Gate::define('admin', fn (User $user) =>  in_array($user->role, ['editor', 'administrator']));
 
-        Blade::if('admin', fn() => request()->user() && request()->user()->can('admin'));
+        Blade::if('admin', fn () => request()->user() && request()->user()->can('admin'));
+        Blade::directive(
+            'timely',
+            function ($time) {
+                return "<?php echo ($time)->diffForHumans(); ?>";
+            }
+        );
     }
 }
