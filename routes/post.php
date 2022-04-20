@@ -35,5 +35,5 @@ Route::name('admin.posts.')->prefix('admin/posts')
     //   'edit' => 'admin.posts.edit',
     //   'update' => 'admin.posts.update',
     //   'destroy' => 'admin.posts.delete',
-    // ]);
+    // ])->missing(fn(Request $request) => Request::route('admin.posts.index'));
   });
