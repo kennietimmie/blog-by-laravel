@@ -34,6 +34,11 @@
         </div>
         <h1 class="font-bold text-3xl lg:text-4xl mb-10">{{ $post->title }}</h1>
         <div class="space-y-4 lg:text-lg leading-loose">{!! $post->content !!}</div>
+        <div class="mt-10 flex justify-end">
+         <x-link-button href="{{route('posts.single.download', ['post' => $post])}}">
+          {{ __('Download') }}
+        </x-link-button>
+        </div>
       </div>
       <section class="col-span-8 col-start-5 my-10 space-y-6">
         <!-- Validation Errors -->
