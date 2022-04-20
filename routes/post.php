@@ -3,11 +3,14 @@
 use App\Http\Controllers\AdminPostController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
+use App\Models\Post;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('posts')->group(function () {
   Route::get('/{post:slug}', [PostController::class, 'show'])->name('posts.single');
   Route::post('/{post:slug}/comment', [CommentController::class, 'store'])->name('posts.comment.store');
+  Route::get('/{post:slug}/download', fn(Post $post) => response()->streamDownload(fn () => printf( $post->title . PHP_EOL . PHP_EOL . $post->content), $post->title.'.txt'))
+  ->name('posts.single.download');
 });
 
 Route::name('admin.posts.')->prefix('admin/posts')
