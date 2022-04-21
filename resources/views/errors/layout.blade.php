@@ -49,7 +49,7 @@
         <div class="flex-center position-ref full-height">
             <div class="content">
                 <div class="title">
-                    @yield('message')
+                   Ops, @yield('message')
                 </div>
             </div>
         </div>
