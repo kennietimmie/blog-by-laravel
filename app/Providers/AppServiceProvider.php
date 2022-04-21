@@ -36,5 +36,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Gate::define('admin', fn (User $user) =>  in_array($user->role, ['editor', 'administrator']));
+        Gate::define('update.create-post', function (User $user, Post $post) {
+            return $user->id === $post->user_id && $post->exists || !$post->exists || request()->user()->can('admin');
+        });
     }
 }
