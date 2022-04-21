@@ -7,7 +7,6 @@ use App\Services\MailchimpNewsletter;
 use Illuminate\Support\ServiceProvider;
 use MailchimpMarketing\ApiClient;
 use App\Services\Newsletter;
-use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
 
 class AppServiceProvider extends ServiceProvider
@@ -33,13 +32,5 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Gate::define('admin', fn (User $user) =>  in_array($user->role, ['editor', 'administrator']));
-
-        Blade::if('admin', fn () => request()->user() && request()->user()->can('admin'));
-        Blade::directive(
-            'timely',
-            function ($time) {
-                return "<?php echo ($time)->diffForHumans(); ?>";
-            }
-        );
     }
 }
