@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Http\Requests\StorePostRequest;
+use App\Models\Post;
 use App\Models\User;
 use App\Services\MailchimpNewsletter;
 use Illuminate\Support\ServiceProvider;
@@ -22,6 +24,8 @@ class AppServiceProvider extends ServiceProvider
             $client = (new ApiClient())->setConfig(collect(config('services.mailchimp'))->only('apiKey', 'server'));
             return new MailchimpNewsletter($client);
         });
+
+        app()->bind(StorePostRequest::class, fn () => new StorePostRequest(request()->route('post')));
     }
 
     /**
