@@ -38,7 +38,6 @@ class AdminPostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        $request->slug = Str::slug($request->slug);
         $attributes = array_merge($request->all(), [
             'thumbnail' => $request->has('thumbnail') ? $request->file('thumbnail')->store('thumbnails') : null,
         ]);
@@ -69,7 +68,6 @@ class AdminPostController extends Controller
      */
     public function update(StorePostRequest $request, Post $post)
     {
-        $request->slug = Str::slug($request->slug);
         $attributes = array_merge($request->all(), [
             'thumbnail' => $request->has('thumbnail') ? $request->file('thumbnail')->store('thumbnails') : null,
         ]);

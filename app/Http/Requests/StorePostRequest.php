@@ -3,11 +3,16 @@
 namespace App\Http\Requests;
 
 use App\Models\Post;
+use Illuminate\Support\Str;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StorePostRequest extends FormRequest
 {
+    /**
+     * The post instance
+     */
     protected $post;
+
      public function __construct(?Post $post=null){
         $this->post = $post ?? new Post();
      }
@@ -18,7 +23,7 @@ class StorePostRequest extends FormRequest
      */
     public function authorize()
     {
-        return auth()->check();
+        return auth()->check() && $this->post && $this->user()->can(['update.create-post'], $this->post);
     }
 
     /**
@@ -36,5 +41,17 @@ class StorePostRequest extends FormRequest
             'categories' => ['array', 'exists:categories,id'],
             'thumbnail' => ['image', 'nullable',]
         ];
+    }
+
+    /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'slug' => Str::slug($this->slug),
+        ]);
     }
 }
