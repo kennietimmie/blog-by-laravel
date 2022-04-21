@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePostRequest;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use App\Models\Post;
 
@@ -15,6 +16,7 @@ class AdminPostController extends Controller
      */
     public function index()
     {
+        Log::info('Show latest posts for user: ' . auth()->user()->id, ['id' =>  auth()->user()->id]);
         return view('admin.posts.index', [
             'posts' => Post::latest()->paginate(20),
         ]);
