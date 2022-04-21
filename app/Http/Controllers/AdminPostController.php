@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePostRequest;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Post;
@@ -16,7 +17,7 @@ class AdminPostController extends Controller
     public function index()
     {
         return view('admin.posts.index', [
-            'posts' => Post::paginate(20),
+            'posts' => Post::latest()->paginate(20),
         ]);
     }
 
@@ -36,10 +37,10 @@ class AdminPostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
         $request->slug = Str::slug($request->slug);
-        $attributes = array_merge($this->validatePost(), [
+        $attributes = array_merge($request->all(), [
             'thumbnail' => $request->has('thumbnail') ? $request->file('thumbnail')->store('thumbnails') : null,
         ]);
 
