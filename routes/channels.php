@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Post;
 use Illuminate\Support\Facades\Broadcast;
 
 /*
@@ -15,4 +16,8 @@ use Illuminate\Support\Facades\Broadcast;
 
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
+});
+
+Broadcast::channel('pri-activities.{post}', function($user, Post $post) {
+return $user->id === $post->user_id || true;
 });

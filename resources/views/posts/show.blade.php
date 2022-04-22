@@ -7,7 +7,8 @@
           Published <time>{{ $post->created_at->diffForHumans() }}</time>
         </p>
         <div class="flex items-center lg:justify-center text-sm mt-4">
-          <img src="https://i.pravatar.cc/60?u={{ $post->author->username }}" alt="Lary avatar" class="rounded-full" width="60" height="60">
+          <img src="https://i.pravatar.cc/60?u={{ $post->author->username }}" alt="Lary avatar" class="rounded-full"
+            width="60" height="60">
           <div class="ml-3 text-left">
             <h5 class="font-bold"><a
                 href="{{ route('posts.author', ['author' => $post->author->username]) }}">{{ $post->author->name }}</a>
@@ -35,18 +36,34 @@
         <h1 class="font-bold text-3xl lg:text-4xl mb-10">{{ $post->title }}</h1>
         <div class="space-y-4 lg:text-lg leading-loose">{!! $post->content !!}</div>
         <div class="mt-10 flex justify-end">
-         <x-link-button href="{{route('posts.single.download', ['post' => $post])}}">
-          {{ __('Download') }}
-        </x-link-button>
+          <x-link-button href="{{ route('posts.single.download', ['post' => $post]) }}">
+            {{ __('Download') }}
+          </x-link-button>
         </div>
       </div>
       <section class="col-span-8 col-start-5 my-10 space-y-6">
         <!-- Validation Errors -->
-       @include('posts._comment-form')
+        @include('posts._comment-form')
         @foreach ($post->comments as $comment)
           <x-post-comment :comment="$comment" />
         @endforeach
       </section>
     </article>
   </main>
+  @auth
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', () => {
+        const posts = @json(App\Models\Post::latest()->take(10)->get());
+        posts.forEach((post) => {
+          Echo.private(`pri-activities.${post.id}`)
+            .listen('.activity-monitor',
+              (e) => console.log({
+                channel: `pri-activities.${post.id}`,
+                e
+              })
+            );
+        })
+      })
+    </script>
+  @endauth
 </x-guest-layout>
