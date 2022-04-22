@@ -13,4 +13,4 @@ Alpine.start();
 // });
 
 Echo.channel('activities')
-.listen('.activity-monitor', (e) => console.log(e))
+  .listen('.activity-monitor', (e) => console.log(e));
