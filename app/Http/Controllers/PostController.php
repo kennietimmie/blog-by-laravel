@@ -16,7 +16,8 @@ class PostController extends Controller
     }
 
     public function show(Post $post){
-        event(new ActivityEvent('posts.view', auth()->user(), $post));
+        // event(new ActivityEvent('posts.view', auth()->user(), $post));
+        broadcast(new ActivityEvent('posts.view', auth()->user(), $post));
         return view('posts.show', [
             'post' => $post
         ]);
