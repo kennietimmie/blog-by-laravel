@@ -15,6 +15,35 @@
        </div>
      </form>
    </x-panel>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', () => {
+        const posts = @json(App\Models\Post::latest()->take(10)->get());
+
+        posts.forEach((post) => {
+          // Private Channels
+          const channel = Echo.private(`pre-activities.${post.id}`);
+
+          // listen to whisper for typing
+          channel.listenForWhisper('typing a comment', (e) => {
+            console.log(e);
+          }).listen('.activity-monitor', function(e) {
+            console.log(...e)
+          });
+
+          // js add event listener
+          document.querySelector('#comment').addEventListener('keyup', function (e) {
+            // whisper typing to channel
+            channel.whisper('typing a comment',{
+              user: @json(auth()->user()),
+              typing: true
+            });
+          });
+
+        });
+
+      });
+    </script>
+
  @else
    <p class="text-sm font-semibold">You have to login to comment</p>
  @endauth

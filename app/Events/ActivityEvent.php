@@ -36,7 +36,7 @@ class ActivityEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return  [new Channel('activities'), new PrivateChannel('pri-activities.'. $this->post->id)];
+        return  [new Channel('activities'), new PrivateChannel('pri-activities.'. $this->post->id), new PresenceChannel('pre-activities.'. $this->post->id)];
     }
 
     /**

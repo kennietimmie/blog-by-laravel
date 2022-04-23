@@ -55,6 +55,7 @@
       document.addEventListener('DOMContentLoaded', () => {
         const posts = @json(App\Models\Post::latest()->take(10)->get());
         posts.forEach((post) => {
+          // Private Channels
           Echo.private(`pri-activities.${post.id}`)
             .listen('.activity-monitor',
               (e) => console.log({
@@ -62,7 +63,22 @@
                 e
               })
             );
-        })
+
+            // Presence Channels
+            Echo.join(`pre-activities.${post.id}`)
+            .here((user) => {
+              console.log({when: 'joined', channel: `pre-activities.${post.id}`, user})
+            })
+            .joining((user) => {
+                console.log({when: 'joining', channel: `pre-activities.${post.id}`, user})
+            })
+            .leaving((user) => {
+                console.log({when: 'leaving', channel: `pre-activities.${post.id}`, user})
+            })
+            .listen('.activity-monitor', (e) => {
+                console.log({channel: `pre-activities.${post.id}`, e})
+            })
+        });
       })
     </script>
   @endauth
