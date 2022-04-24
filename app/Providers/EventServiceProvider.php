@@ -26,6 +26,13 @@ class EventServiceProvider extends ServiceProvider
         ]
     ];
 
+    /**
+     * The subscriber classes to register.
+     *
+     * @var array
+     */
+    protected $subscribe = [
+        PostEventSubscriber::class,
     ];
 
     /**
