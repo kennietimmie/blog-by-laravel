@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\PostDelete;
 use App\Http\Requests\StorePostRequest;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -88,6 +89,7 @@ class AdminPostController extends Controller
     public function destroy(Post $post)
     {
         $post->delete();
+        PostDelete::dispatch($post);
         return back()->with('message', 'Post deleted successfully');
     }
 }
