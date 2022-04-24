@@ -37,7 +37,18 @@
       {{ $slot }}
     </main>
   </div>
-  <x-alert  />
+  <x-alert />
+  <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+      Echo.private('post-deleted')
+        .listen('PostDelete',
+          (e) => console.log({
+            channel: `post-delete`,
+            ...e
+          })
+        );
+    });
+  </script>
 </body>
 
 </html>

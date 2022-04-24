@@ -88,8 +88,8 @@ class AdminPostController extends Controller
      */
     public function destroy(Post $post)
     {
-        $post->delete();
         PostDelete::dispatch($post);
+        $post->delete();
         return back()->with('message', 'Post deleted successfully');
     }
 }

@@ -11,7 +11,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class PostDelete
+class PostDelete implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -40,5 +40,20 @@ class PostDelete
     public function broadcastOn()
     {
         return new PrivateChannel('post-deleted');
+    }
+
+    /**
+     * Get the data to broadcast for the model.
+     *
+     * @param  string  $event
+     * @return array
+     */
+    public function broadcastWith()
+    {
+        return [
+            'action'   => 'post deleted',
+            'on'       => now()->toDateTimeString(),
+            'data' => collect($this->post)->except(['author', 'categories']),
+        ];
     }
 }

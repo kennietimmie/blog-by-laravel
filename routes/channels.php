@@ -27,3 +27,7 @@ Broadcast::channel('pre-activities.{post}', function($user,Post $post){
         'user' => $user,
     ] : null;
 });
+
+Broadcast::channel('post-deleted', function() {
+    return true;
+});
