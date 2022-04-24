@@ -117,6 +117,10 @@ return [
             'driver' => 'single',
             'path' => storage_path('logs/php-deprecation-warnings.log'),
         ],
+        'post-delete' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/post-delete.log'),
+        ],
         'info' => [
             'driver' => 'single',
             'path' => storage_path('logs/info.log'),
