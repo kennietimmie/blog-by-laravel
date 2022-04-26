@@ -3,10 +3,12 @@
 namespace App\Listeners;
 
 use App\Events\PostDelete;
+use App\Mail\PostDeleted;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class SendPostDeletedNotification implements ShouldQueue
 {
@@ -29,6 +31,8 @@ class SendPostDeletedNotification implements ShouldQueue
     public function handle(PostDelete $event)
     {
         Log::channel('post-delete-info')->info('Post deleted by user: ' . auth()->user()->username, collect($event->post)->except(['author', 'categories'])->toArray());
+
+        Mail::to($event->post->author->email)->send(new PostDeleted($event->post));
     }
 
     /**

@@ -13,7 +13,9 @@
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "mailchimp/marketing": "^3.0",
-        "pusher/pusher-php-server": "^7.0"
+        "pusher/pusher-php-server": "^7.0",
+        "symfony/http-client": "^5.4",
+        "symfony/mailgun-mailer": "^5.4"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
