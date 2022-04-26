@@ -14,7 +14,7 @@ class StorePostRequest extends FormRequest
     protected $post;
 
      public function __construct(?Post $post=null){
-        $this->post = $post ?? new Post();
+        $this->post = $post;
      }
     /**
      * Determine if the user is authorized to make this request.
@@ -35,7 +35,7 @@ class StorePostRequest extends FormRequest
     {
         return [
             'title' => ['required', 'min:3', 'max:255'],
-            'slug' => ['required', 'min:3', 'max:255', $this->post->exists ? 'unique:posts,slug,' . $this->post->id : 'unique:posts'],
+            'slug' => ['required', 'min:3', 'max:255',optional($this->post)->exists ? 'unique:posts,slug,' . optional($this->post)->id : 'unique:posts'],
             'content' => ['required', 'min:3'],
             'excerpt' => ['required', 'min:3'],
             'categories' => ['array', 'exists:categories,id'],
