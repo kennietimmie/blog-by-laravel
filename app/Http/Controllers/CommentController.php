@@ -6,6 +6,7 @@ use App\Models\Comment;
 use App\Models\Post;
 use App\Notifications\PostCommented;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 
 class CommentController extends Controller
 {
@@ -31,6 +32,7 @@ class CommentController extends Controller
         ]);
 
         $post->author->notify(new PostCommented($comment));
+        Notification::send($post->participants->unique()->except(auth()->id()), new PostCommented($comment));
         return back();
 
     }
