@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Comment;
 use App\Models\Post;
+use App\Notifications\PostCommented;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -24,11 +25,12 @@ class CommentController extends Controller
             'comment' => ['required', 'min:1', 'max:255']
         ]);
 
-        $post->comments()->create([
+        $comment = $post->comments()->create([
             'content' => $attributes['comment'],
             'user_id' => auth()->id()
         ]);
 
+        $post->author->notify(new PostCommented($comment));
         return back();
 
     }
