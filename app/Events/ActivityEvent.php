@@ -26,7 +26,7 @@ class ActivityEvent implements ShouldBroadcast
     {
         $this->type = $type;
         $this->user = $user;
-        $this->post = $post ?? (object) ['id' => null];
+        $this->post = $post;
     }
 
     /**
@@ -36,7 +36,7 @@ class ActivityEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return  [new Channel('activities'), new PrivateChannel('pri-activities.'. $this->post->id), new PresenceChannel('pre-activities.'. $this->post->id)];
+        return  [new Channel('activities'), new PrivateChannel('pri-activities.'. optional($this->post)->id), new PresenceChannel('pre-activities.'. optional($this->post)->id)];
     }
 
     /**
