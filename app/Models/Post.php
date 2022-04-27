@@ -93,4 +93,9 @@ class Post extends Model
     public function setSlugAttribute($slug){
         $this->attributes['slug'] = Str::slug($slug);
     }
+
+    public function participants()
+    {
+        return $this->belongsToMany(User::class, Comment::class);
+    }
 }
