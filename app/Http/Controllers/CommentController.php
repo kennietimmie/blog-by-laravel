@@ -31,10 +31,16 @@ class CommentController extends Controller
             'user_id' => auth()->id()
         ]);
 
-        $post->author->notify(new PostCommented($comment));
-        Notification::send($post->participants->unique()->except(auth()->id()), new PostCommented($comment));
+        $post->author->notify(new PostCommented($post)); // post author
+        Notification::send(
+            $post->participants->unique()
+                ->except(
+                    auth()->id(),
+                    $post->author->id // just incase he/she commented too
+                ),
+            new PostCommented($post)
+        );
         return back();
-
     }
 
     /**
