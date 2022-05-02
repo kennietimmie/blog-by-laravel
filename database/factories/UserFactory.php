@@ -18,6 +18,7 @@ class UserFactory extends Factory
             'name' => $this->faker->name(),
             'username' => $this->faker->unique()->userName(),
             'email' => $this->faker->unique()->safeEmail(),
+            'phone_number' => $this->faker->phoneNumber(),
             'role' => 'editor',
             'email_verified_at' => now(),
             'password' => 'password', // password auto hashed
