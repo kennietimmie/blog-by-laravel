@@ -61,7 +61,8 @@ class PostCommented extends Notification implements ShouldQueue
     public function toArray($notifiable)
     {
         return [
-            //
+           'post_id' => $this->post->id,
+           'post_title' => $this->post->title,
         ];
     }
 
