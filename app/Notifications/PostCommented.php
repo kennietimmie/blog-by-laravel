@@ -6,7 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-
+use Illuminate\Notifications\Messages\NexmoMessage;
 class PostCommented extends Notification implements ShouldQueue
 {
     use Queueable;
@@ -34,7 +34,7 @@ class PostCommented extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return ['mail', 'sms'];
+        return ['mail', 'nexmo'];
     }
 
     /**
@@ -63,5 +63,17 @@ class PostCommented extends Notification implements ShouldQueue
         return [
             //
         ];
+    }
+
+    /**
+     * Get the Nexmo / SMS representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\NexmoMessage
+     */
+    public function toNexmo($notifiable)
+    {
+        return (new NexmoMessage)
+            ->content('There is a new comment on post "' . $this->post->title . '"');
     }
 }

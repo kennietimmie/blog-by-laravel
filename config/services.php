@@ -37,5 +37,8 @@ return [
             'subscribes' => env('MAILCHIMP_LIST_SUBSCRIBES')
         ],
     ],
+    'nexmo' => [
+        'sms_from' => '2348177252620',
+    ],
 
 ];
