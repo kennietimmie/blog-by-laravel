@@ -12,13 +12,18 @@ class PostCommented extends Notification implements ShouldQueue
     use Queueable;
 
     /**
+     * comment instance
+     */
+    protected $post;
+
+    /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($post)
     {
-        //
+        $this->post = $post;
     }
 
     /**
@@ -41,9 +46,10 @@ class PostCommented extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+                    ->markdown('emails.posts.comment', [
+                        'notifiable' => $notifiable,
+                        'post' => $this->post
+                    ]);
     }
 
     /**
