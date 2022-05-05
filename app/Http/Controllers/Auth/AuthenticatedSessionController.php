@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Events\ActivityEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Jobs\UserLoggedIn;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -34,6 +35,7 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
         event(new ActivityEvent('login', Auth::user()));
+        dispatch((new UserLoggedIn(Auth::user()))->delay(now()->addMinutes(5)));
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 
