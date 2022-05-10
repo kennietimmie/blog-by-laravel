@@ -14,14 +14,14 @@ Route::prefix('posts')->group(function () {
 });
 
 Route::name('admin.posts.')->prefix('admin/posts')
-  ->middleware(['throttle:posts', 'admin'])
+  ->middleware(['throttle:posts', 'admin', 'auth'])
   ->group(function () {
 
     Route::controller(AdminPostController::class)->group(function () {
       Route::get('/', 'index')->name('index');
 
       Route::get('/create', 'create')->name('create');
-      Route::post('/', 'store')->name('store');
+      Route::post('/', 'store')->name('store')->middleware('can:update,post');
 
       Route::get('/{post}', 'edit')->name('edit');
       Route::match(['put', 'patch'], '/{post}', 'update')->name('update');

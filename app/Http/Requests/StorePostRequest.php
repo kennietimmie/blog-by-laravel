@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Models\Post;
 use Illuminate\Support\Str;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
 class StorePostRequest extends FormRequest
 {
@@ -23,7 +24,8 @@ class StorePostRequest extends FormRequest
      */
     public function authorize()
     {
-        return auth()->check() && $this->post && $this->user()->can(['update.create-post'], $this->post);
+        return Gate::any(['update-post', 'delete-post', 'create-post'], $this->post);
+        // return Gate::authorize('update-post', $this->post);
     }
 
     /**
