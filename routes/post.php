@@ -14,7 +14,7 @@ Route::prefix('posts')->group(function () {
 });
 
 Route::name('admin.posts.')->prefix('admin/posts')
-  ->middleware(['throttle:posts', 'admin', 'auth'])
+  ->middleware(['throttle:posts', 'admin', 'auth', 'verified'])
   ->group(function () {
 
     Route::controller(AdminPostController::class)->group(function () {
