@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Str;
 
 class Category extends Model
 {
@@ -28,5 +29,13 @@ class Category extends Model
 
     public function getNameAttribute($value){
         return ucwords($value);
+    }
+
+    /**
+     * Set slug
+     * @param string $slug
+     */
+    public function getSlugAttribute($slug){
+        $this->attributes['slug'] = Str::slug($slug);
     }
 }
