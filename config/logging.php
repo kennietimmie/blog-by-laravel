@@ -125,6 +125,10 @@ return [
             'driver' => 'single',
             'path' => storage_path('logs/post-delete.error.log')
         ],
+        'user-info' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/user.info.log')
+        ],
         'info' => [
             'driver' => 'single',
             'path' => storage_path('logs/info.log'),

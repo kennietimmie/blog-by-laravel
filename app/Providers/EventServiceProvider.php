@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Event;
 use App\Events\PostDelete;
 use App\Listeners\PostEventSubscriber;
 use App\Listeners\SendPostDeletedNotification;
+use App\Models\User;
+use App\Observers\UserObserver;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -33,6 +35,15 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $subscribe = [
         PostEventSubscriber::class,
+    ];
+
+    /**
+     * The model observers for your application.
+     *
+     * @var array
+     */
+    protected $observers = [
+        User::class => [UserObserver::class],
     ];
 
     /**
