@@ -47,6 +47,24 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Post::class);
     }
 
+    /**
+     * Get the user's most recent post.
+     *
+     */
+    public function latestPost()
+    {
+        return $this->hasOne(Post::class)->latestOfMany();
+    }
+
+    /**
+     * Get the user's oldest post.
+     *
+     */
+    public function oldestPost()
+    {
+        return $this->hasOne(Post::class)->oldestOfMany();
+    }
+
     public function setPasswordAttribute($password)
     {
         $this->attributes['password'] = bcrypt($password);

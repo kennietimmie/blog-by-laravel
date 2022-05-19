@@ -19,7 +19,7 @@ class PostController extends Controller
         // event(new ActivityEvent('posts.view', auth()->user(), $post));
         broadcast(new ActivityEvent('posts.view', auth()->user(), $post));
         return view('posts.show', [
-            'post' => $post
+            'post' => $post->loadMissing(['categories', 'author', 'comments'])
         ]);
     }
 }
