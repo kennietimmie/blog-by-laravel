@@ -14,6 +14,27 @@ class UserResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+        'id' => $this->id,
+        'name' => $this->name,
+        'email' => $this->email,
+        'posts' => PostResource::collection($this->posts),
+        'created_at' => $this->created_at,
+        'updated_at' => $this->updated_at,
+    ];
+    }
+
+    /**
+     * Customize the outgoing response for the resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Response  $response
+     * @return void
+     */
+    public function withResponse($request, $response)
+    {
+        $response
+        ->header('X-Machine', '1.4.6')
+        ->header('X-Powered-By', null);
     }
 }

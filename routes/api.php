@@ -22,4 +22,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/users', fn(Request $request) => new UserCollection(User::all()));
+Route::get('/users/paginate', fn(Request $request) => UserResource::collection(User::paginate(10)));
 Route::get('/users/{user}', fn(Request $request, User $user) => new UserResource($user));
